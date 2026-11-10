@@ -1,0 +1,43 @@
+<Window x:Class="PeakWorkshop.Desktop.SetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="游戏与插件 · PEAK Workshop" Width="800" Height="580" MinWidth="700" MinHeight="540"
+        WindowStartupLocation="CenterOwner" Background="#111722" Foreground="#F0F4FA"
+        FontFamily="Segoe UI, Microsoft YaHei UI" Loaded="Setup_Loaded" Closing="Setup_Closing">
+  <Grid Margin="28">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <StackPanel>
+      <TextBlock Text="准备出发" FontSize="25" FontWeight="SemiBold"/>
+      <TextBlock Text="找到游戏，安装插件，然后从 Steam 启动 PEAK。" Foreground="#98A6BC" Margin="0,8,0,20"/>
+    </StackPanel>
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+      <StackPanel Margin="0,0,12,0"><TextBlock Text="PEAK 游戏目录" Foreground="#98A6BC" Margin="0,0,0,7"/>
+        <ComboBox x:Name="GameSelector" SelectionChanged="Game_Changed" FontSize="13" Padding="6,8" MinHeight="36" Foreground="#152035" Background="#F0F4FA" AutomationProperties.Name="选择 PEAK 游戏目录">
+          <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Path}" Foreground="#152035" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}"/></DataTemplate></ComboBox.ItemTemplate>
+        </ComboBox>
+      </StackPanel>
+      <Button x:Name="FindButton" Grid.Column="1" Content="重新查找" Click="Find_Click" VerticalAlignment="Bottom" Margin="0,0,8,0" Padding="12,9"/>
+      <Button x:Name="BrowseButton" Grid.Column="2" Content="手动选择" Click="Browse_Click" VerticalAlignment="Bottom" Padding="12,9"/>
+    </Grid>
+    <Border Grid.Row="2" Background="#191F2B" BorderBrush="#334157" BorderThickness="1" CornerRadius="10" Padding="18" Margin="0,18,0,18">
+      <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+          <TextBlock x:Name="SetupTitle" Text="正在查找游戏…" FontSize="17" FontWeight="SemiBold" Foreground="#B6F383"/>
+          <TextBlock x:Name="SetupDetail" Text="读取 Steam 游戏库，不会自动安装或启动游戏。" TextWrapping="Wrap" Foreground="#AEBED4" LineHeight="22" Margin="0,12,0,0"/>
+          <TextBlock x:Name="SetupNotice" Text="首次使用时请点击下方安装按钮。已有兼容的加载器会保留原配置。" Foreground="#8FA3BD" FontSize="12" TextWrapping="Wrap" LineHeight="21" Margin="0,18,0,0"/>
+        </StackPanel>
+      </ScrollViewer>
+    </Border>
+    <WrapPanel Grid.Row="3" Margin="0,0,0,18">
+      <Button x:Name="InstallButton" Content="安装游戏插件" Click="Install_Click" IsEnabled="False" Background="#B6F383" Foreground="#172314" BorderBrush="#B6F383" FontWeight="SemiBold" Margin="0,0,10,8"/>
+      <Button x:Name="UninstallButton" Content="卸载本程序插件" Click="Uninstall_Click" IsEnabled="False" Margin="0,0,10,8"/>
+      <Button x:Name="CollectButton" Content="收集诊断日志" Click="Collect_Click" Margin="0,0,0,8"/>
+    </WrapPanel>
+    <Grid Grid.Row="4">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+      <TextBlock Text="设置、日志和安装备份保存在本程序文件夹。" Foreground="#70839D" FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,15,0"/>
+      <Button x:Name="DoneButton" Grid.Column="1" Content="完成，返回修改器" Click="Done_Click" Padding="15,9"/>
+    </Grid>
+  </Grid>
+</Window>

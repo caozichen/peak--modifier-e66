@@ -1,0 +1,115 @@
+﻿<Window x:Class="PeakWorkshop.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="这次我一定要爬到顶 · PEAK Workshop 0.3.2" Width="1180" Height="860" MinWidth="1020" MinHeight="730"
+        WindowStartupLocation="CenterScreen" Background="#111722" Foreground="#F0F4FA"
+        FontFamily="Segoe UI, Microsoft YaHei UI" FontSize="13"
+        Loaded="Window_Loaded" Closing="Window_Closing">
+  <Grid>
+    <Grid.ColumnDefinitions><ColumnDefinition Width="205" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+    <Border Background="#141B26" BorderBrush="#273143" BorderThickness="0,0,1,0">
+      <Grid Margin="22,28,20,22">
+        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+        <StackPanel>
+          <Path Data="M 2,34 L 18,5 L 25,18 L 30,10 L 42,34 Z" Fill="#B6F383" Width="42" Height="34" HorizontalAlignment="Left" Stretch="Uniform" Margin="0,0,0,15" />
+          <TextBlock Text="PEAK" FontSize="29" FontWeight="Bold" />
+          <TextBlock Text="WORKSHOP" FontSize="12" Foreground="#98A6BC" Margin="1,4,0,0" />
+          <TextBlock Text="功能分组" FontSize="10" Foreground="#6F829D" Margin="0,29,0,11" />
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="-7,0,-7,16">
+          <StackPanel x:Name="GroupNavigation" />
+        </ScrollViewer>
+        <StackPanel Grid.Row="2">
+          <Button x:Name="SetupButton" Content="游戏与插件" Click="Setup_Click" Padding="12,10" Margin="0,0,0,12" HorizontalAlignment="Stretch" />
+          <Border Background="#253141" CornerRadius="5" Padding="9,5" HorizontalAlignment="Left"><TextBlock Text="0.3.2  /  本地版" FontSize="11" Foreground="#AEBED4" /></Border>
+          <TextBlock Text="所有功能默认关闭" Foreground="#708097" FontSize="11" Margin="0,12,0,0" />
+          <TextBlock Text="效果以游戏内测试为准" Foreground="#708097" FontSize="11" Margin="0,5,0,0" />
+        </StackPanel>
+      </Grid>
+    </Border>
+    <Grid Grid.Column="1" Margin="28,27,28,20">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Grid>
+        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+        <StackPanel Margin="0,0,16,0"><TextBlock Text="这次我一定要爬到顶" FontSize="25" FontWeight="SemiBold" /><TextBlock Text="PEAK 自制修改器 / 解压即用的便携版" Foreground="{StaticResource Muted}" Margin="0,7,0,0" /></StackPanel>
+        <Border x:Name="VersionInfoPanel" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#252F40" CornerRadius="10" Padding="12,9" Loaded="VersionInfo_Loaded" Unloaded="VersionInfo_Unloaded">
+          <Border.Resources>
+            <Style x:Key="VersionHashButton" TargetType="Button">
+              <Setter Property="Cursor" Value="Hand" />
+              <Setter Property="Padding" Value="0" />
+              <Setter Property="Background" Value="Transparent" />
+              <Setter Property="BorderThickness" Value="0" />
+              <Setter Property="HorizontalContentAlignment" Value="Left" />
+              <Setter Property="Template">
+                <Setter.Value><ControlTemplate TargetType="Button"><Border Background="Transparent"><ContentPresenter /></Border></ControlTemplate></Setter.Value>
+              </Setter>
+            </Style>
+          </Border.Resources>
+          <StackPanel>
+            <Button Style="{StaticResource VersionHashButton}" Click="CopyGameHash_Click" AutomationProperties.Name="复制当前游戏程序集完整 SHA-256">
+              <TextBlock x:Name="GameBuildText" Text="游戏 Build 未读取 · SHA256 未读取" Foreground="#C4D3E5" FontSize="11" ToolTipService.InitialShowDelay="200" />
+            </Button>
+            <Button Style="{StaticResource VersionHashButton}" Click="CopyBaselineHash_Click" Margin="0,6,0,0" AutomationProperties.Name="复制原支持的游戏程序集完整 SHA-256">
+              <TextBlock x:Name="TrainerVersionText" Text="修改器 · 原支持 SHA256 未读取" Foreground="#A3B2C7" FontSize="11" ToolTipService.InitialShowDelay="200" />
+            </Button>
+          </StackPanel>
+        </Border>
+      </Grid>
+      <Border Grid.Row="1" Margin="0,20,0,0" Background="{StaticResource Panel}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="12" Padding="18,15">
+        <Grid>
+          <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+          <StackPanel>
+            <StackPanel Orientation="Horizontal"><Ellipse x:Name="ConnectionDot" Width="8" Height="8" Fill="#718096" Margin="0,0,9,0" /><TextBlock x:Name="ConnectionTitle" Text="等待游戏连接" FontSize="15" FontWeight="SemiBold" /></StackPanel>
+            <TextBlock x:Name="ConnectionDetail" Text="先启动已部署插件的 PEAK，再进入角色场景。" Foreground="{StaticResource Muted}" FontSize="12" Margin="17,7,10,0" TextWrapping="Wrap" />
+            <TextBlock x:Name="SessionDetail" Text="尚未确认游戏会话" Foreground="#6F829D" FontSize="11" Margin="17,7,0,0" TextWrapping="Wrap" />
+          </StackPanel>
+          <Button x:Name="ConnectButton" Grid.Column="1" Content="重新连接" VerticalAlignment="Center" Click="Connect_Click" Margin="12,0,0,0" />
+        </Grid>
+      </Border>
+      <Border Grid.Row="2" Background="#2C2A1D" BorderBrush="#70633A" BorderThickness="1" CornerRadius="10" Padding="15,12" Margin="0,12,0,0">
+        <Grid>
+          <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,15,0">
+            <TextBlock Text="清除已有状态" FontSize="14" FontWeight="SemiBold" Foreground="#F3D999" />
+            <TextBlock x:Name="ClearStatusDetail" Text="角色就绪后可清除当前状态，只执行一次。" Foreground="#B9AB87" FontSize="11" Margin="0,5,0,0" TextWrapping="Wrap" />
+          </StackPanel>
+          <Button x:Name="ClearStatusButton" Grid.Column="1" Content="一键清除当前状态" Click="ClearStatus_Click" IsEnabled="False" Padding="18,11" FontWeight="SemiBold" Background="#E5C36A" BorderBrush="#E5C36A" Foreground="#2B2413" VerticalAlignment="Center" AutomationProperties.Name="一键清除当前状态" ToolTipService.ShowOnDisabled="True" />
+        </Grid>
+      </Border>
+      <Grid Grid.Row="3" Margin="0,15,0,13">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+        <Border Background="#1A2331" BorderBrush="#334157" BorderThickness="1" CornerRadius="8" Padding="12,8" Margin="0,0,15,0">
+          <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="32" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+            <TextBlock Text="搜索" Foreground="#8498B3" FontSize="11" VerticalAlignment="Center" />
+            <TextBox x:Name="SearchBox" Grid.Column="1" TextChanged="Filter_Changed" Background="Transparent" BorderThickness="0" Foreground="#DFE8F5" CaretBrush="#B6F383" VerticalContentAlignment="Center" AutomationProperties.Name="搜索功能名称或说明" ToolTip="搜索功能名称、说明或分组" />
+          </Grid>
+        </Border>
+        <CheckBox x:Name="AvailableOnlyBox" Grid.Column="1" Content="仅看可用" Foreground="#9BAEC7" VerticalAlignment="Center" Margin="0,0,15,0" Checked="Filter_Changed" Unchecked="Filter_Changed" />
+        <TextBlock x:Name="FeatureCountText" Grid.Column="2" Text="功能目录" Foreground="#7D91AD" FontSize="11" VerticalAlignment="Center" />
+      </Grid>
+      <ScrollViewer x:Name="FeatureViewport" Grid.Row="4" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" SizeChanged="FeatureViewport_SizeChanged" ScrollChanged="FeatureViewport_ScrollChanged" Padding="0,0,5,0">
+        <StackPanel>
+          <TextBlock x:Name="EmptyFilterText" Text="没有符合筛选条件的功能。" Foreground="#8FA7BE" Margin="4,20" Visibility="Collapsed" />
+          <StackPanel x:Name="FeatureGroupsHost" />
+        </StackPanel>
+      </ScrollViewer>
+      <Border Grid.Row="5" Background="#17232C" BorderBrush="#293C49" BorderThickness="1" CornerRadius="9" Padding="13,10" Margin="0,13,0,0">
+        <StackPanel>
+          <TextBlock Text="逐项测试启用和关闭恢复；共享迷雾功能需要房主权限。" Foreground="#8DA7BA" FontSize="11" TextWrapping="Wrap" />
+          <TextBlock x:Name="NoticeText" Text="尚未发送修改命令。" Foreground="#A4BACF" FontSize="12" Margin="0,7,0,0" TextWrapping="Wrap" />
+        </StackPanel>
+      </Border>
+      <Grid Grid.Row="6" Margin="0,15,0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+        <StackPanel VerticalAlignment="Center" Margin="0,0,12,0"><TextBlock Text="游戏目录" FontSize="10" Foreground="#687C96" /><TextBlock x:Name="GamePathText" Text="请在“游戏与插件”中选择" Foreground="#8FA1B8" FontSize="10" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" ToolTip="通过“游戏与插件”查找或手动选择。" /></StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+          <Button Content="打开日志" Click="OpenLogs_Click" Margin="0,0,9,0" Padding="12,9" />
+          <Button x:Name="DetachButton" Content="停用插件" Click="Detach_Click" Margin="0,0,9,0" Padding="12,9" IsEnabled="False" ToolTip="关闭功能、撤销本插件补丁并停止通信。保持窗口打开，重启游戏后重新连接。" />
+          <Button x:Name="ResetButton" Content="恢复全部" Click="Reset_Click" Background="#B6F383" BorderBrush="#B6F383" Foreground="#172314" FontWeight="SemiBold" Padding="15,9" IsEnabled="False" />
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Grid>
+</Window>

@@ -1,0 +1,1 @@
+namespace System.Web.Script.Serialization { public class JavaScriptSerializer { public int MaxJsonLength {get;set;} public string Serialize(object value) => System.Text.Json.JsonSerializer.Serialize(value); } }

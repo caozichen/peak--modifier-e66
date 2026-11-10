@@ -1,0 +1,41 @@
+# Build output and local IDE state
+**/bin/
+**/obj/
+.vs/
+.idea/
+*.user
+*.suo
+
+# Runtime state, installation records and backups
+**/logs/
+**/backups/
+**/回滚备份/
+**/settings.json
+**/installed-files.json
+**/pending.json
+**/test-results.json
+
+# Local credentials and environment files
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.key
+credentials*
+
+# Binaries and release archives
+*.dll
+*.exe
+*.pdb
+*.zip
+
+# Dependencies, generated release folders and validation fixtures
+.dependencies/
+artifacts/
+**/fixtures/
+**/discovery-fixtures/
+**/test-runs/
+**/upgrade-test-results.json
+*.tmp
+__pycache__/

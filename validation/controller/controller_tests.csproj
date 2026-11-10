@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><Nullable>disable</Nullable></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../Plugin/TrainerPlugin.cs" Link="Production/TrainerPlugin.cs" />
+    <Compile Include="../../Plugin/WireJson.cs" Link="Production/WireJson.cs" />
+    <Reference Include="Newtonsoft.Json"><HintPath>$(GameDir)\PEAK_Data\Managed\Newtonsoft.Json.dll</HintPath></Reference>
+    <Compile Include="../../Plugin/FeatureSettings.cs" Link="Production/FeatureSettings.cs" />
+    <Compile Include="../../Plugin/PipeServer.cs" Link="Production/PipeServer.cs" /><Compile Include="../../Plugin/SecurePipeFactory.cs" Link="Production/SecurePipeFactory.cs" />
+    <Compile Include="../../Shared/*.cs" Link="Production/%(Filename).cs" />
+  </ItemGroup>
+</Project>

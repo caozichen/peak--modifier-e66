@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <!-- Set once per invocation with -p:GameDir=... or PEAK_GAME_DIR. -->
+    <GameDir Condition="'$(GameDir)' == ''">$(PEAK_GAME_DIR)</GameDir>
+    <BepInExDir Condition="'$(BepInExDir)' == ''">$(MSBuildThisFileDirectory).dependencies\BepInEx\BepInEx\core</BepInExDir>
+  </PropertyGroup>
+</Project>

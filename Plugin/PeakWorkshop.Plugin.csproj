@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <!-- HarmonyX's emit signatures use the game's Mono mscorlib identities. -->
+    <NoStdLib>true</NoStdLib>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <AssemblyName>PeakWorkshop.Plugin</AssemblyName>
+    <Version>0.2.6</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib"><HintPath>$(GameDir)\PEAK_Data\Managed\mscorlib.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="System"><HintPath>$(GameDir)\PEAK_Data\Managed\System.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="System.Core"><HintPath>$(GameDir)\PEAK_Data\Managed\System.Core.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="netstandard"><HintPath>$(GameDir)\PEAK_Data\Managed\netstandard.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="System.Runtime"><HintPath>$(GameDir)\PEAK_Data\Managed\System.Runtime.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Newtonsoft.Json"><HintPath>$(GameDir)\PEAK_Data\Managed\Newtonsoft.Json.dll</HintPath><Private>false</Private></Reference>
+    <Compile Include="..\Shared\WireMessage.cs" Link="Protocol\WireMessage.cs" />
+    <Compile Include="..\Shared\FeatureCatalog.cs" Link="Protocol\FeatureCatalog.cs" />
+    <Compile Include="..\Shared\PipeIdentity.cs" Link="Protocol\PipeIdentity.cs" />
+    <Reference Include="BepInEx"><HintPath>$(BepInExDir)\BepInEx.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>$(BepInExDir)\0Harmony.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(GameDir)\PEAK_Data\Managed\UnityEngine.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(GameDir)\PEAK_Data\Managed\UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>

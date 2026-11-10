@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><LangVersion>latest</LangVersion><Nullable>disable</Nullable></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Plugin\GameAdapter.World.cs" Link="Production\GameAdapter.World.cs" />
+    <Compile Include="..\..\Plugin\FeatureSettings.cs" Link="Production\FeatureSettings.cs" />
+    <Compile Include="..\..\Shared\FeatureCatalog.cs" Link="Production\FeatureCatalog.cs" />
+  </ItemGroup>
+</Project>

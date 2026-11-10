@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\WireMessage.cs" Link="Protocol\WireMessage.cs" />
+    <Compile Include="..\Shared\FeatureCatalog.cs" Link="Protocol\FeatureCatalog.cs" />
+    <Compile Include="..\Shared\PipeIdentity.cs" Link="Protocol\PipeIdentity.cs" />
+    <Compile Include="..\Plugin\PipeServer.cs" Link="Transport\PipeServer.cs" />
+    <Compile Include="..\Plugin\SecurePipeFactory.cs" Link="Transport\SecurePipeFactory.cs" />
+    <Compile Include="..\Plugin\FeatureSettings.cs" Link="Features\FeatureSettings.cs" />
+    <Compile Include="..\Plugin\WireJson.cs" Link="Protocol\WireJson.cs" />
+    <Compile Include="..\Desktop\PipeClient.cs" Link="Client\PipeClient.cs" />
+    <Reference Include="Newtonsoft.Json"><HintPath>$(GameDir)\PEAK_Data\Managed\Newtonsoft.Json.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

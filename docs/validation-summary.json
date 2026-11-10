@@ -1,0 +1,73 @@
+{
+  "createdUtc": "2026-11-10T14:10:03.048942+00:00",
+  "desktopVersion": "0.3.2",
+  "pluginVersion": "0.2.6",
+  "scope": "Source repository preparation; isolated production-code and WPF checks, no game executed or installed",
+  "build": {
+    "pluginWarnings": 0,
+    "pluginErrors": 0,
+    "desktopWarnings": 0,
+    "desktopErrors": 0
+  },
+  "suites": [
+    {
+      "suite": "transport",
+      "total": 74,
+      "passed": 74,
+      "failed": 0
+    },
+    {
+      "suite": "controller",
+      "total": 31,
+      "passed": 31,
+      "failed": 0
+    },
+    {
+      "suite": "lifecycle",
+      "total": 26,
+      "passed": 26,
+      "failed": 0
+    },
+    {
+      "suite": "discovery",
+      "total": 23,
+      "passed": 23,
+      "failed": 0
+    },
+    {
+      "suite": "installation",
+      "total": 32,
+      "passed": 32,
+      "failed": 0
+    },
+    {
+      "suite": "world",
+      "total": 13,
+      "passed": 13,
+      "failed": 0
+    },
+    {
+      "suite": "ui",
+      "total": 26,
+      "passed": 26,
+      "failed": 0
+    }
+  ],
+  "total": 225,
+  "passed": 225,
+  "failed": 0,
+  "legacyDeployFixturePassed": true,
+  "portableFolderGeneratedAndPayloadVerified": true,
+  "gameplayVerified": false,
+  "longDurationMemoryVerified": false,
+  "optionalGameAssemblyHarness": {
+    "total": 35,
+    "passed": 26,
+    "failed": 9,
+    "error": "Legacy Harmony original-instruction reader reports NotSupportedException: Body-less method on the .NET host; not part of standard Test.ps1 and not evidence of live-game failure"
+  },
+  "powershell51": {
+    "scriptsParsed": true,
+    "buildAndPublishExecuted": true
+  }
+}
