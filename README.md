@@ -4,6 +4,187 @@
 
 本仓库保存最新源码、构建及验证脚本、功能说明、开发准备与分析资料。**不提交编译后的 EXE、DLL、压缩包，也不提交游戏程序集、原修改器程序、账号凭据、个人设置、日志或备份。** 构建产物在本地产生。
 
+## 新电脑首次使用：从下载源码到打开修改器
+
+**本仓库提供源码。你需要先生成一次完整运行目录，再打开其中的 EXE。以后日常使用直接打开 EXE，无需重复构建，也无需编写代码。**
+
+如果你已经安装 Windows x64、Steam PEAK 和 **.NET SDK 10.0.403 x64**，从第 2 步开始；安装后仍需在第 3 步确认 SDK 能被找到。
+
+### 第 1 步：准备电脑和游戏
+
+1. 使用 Windows 10/11 x64。
+2. 在 Steam 中安装 PEAK，至少正常启动一次，再退出游戏。
+3. 从 [.NET 10 官方下载页](https://dotnet.microsoft.com/download/dotnet/10.0)安装 **SDK 10.0.403、Windows x64**。下载的是 SDK，不是只有 Runtime 的运行时安装包。版本选择规则见下文环境说明。
+4. 如果刚安装完 SDK，请关闭原来的命令行窗口，后面重新打开，让新的窗口读取更新后的 PATH。
+
+不需要安装 Visual Studio、C# 编辑器、Python 或 Node.js。PowerShell 随 Windows 提供。
+
+### 第 2 步：把源码完整放到电脑上
+
+不使用 Git 也可以下载：
+
+1. 打开[本仓库首页](https://github.com/caozichen/peak--modifier-e66)。仓库已公开，下载源码无需 GitHub 登录。
+2. 点击绿色 **Code** 按钮，选择 **Download ZIP**。
+3. 在文件资源管理器中找到下载的 ZIP，右键选择“全部解压缩”，解压到自己有写权限的文件夹。
+4. 进入解压后的源码根目录。这个目录中应能同时看到 **`README.md`、`global.json`、`scripts`、`Desktop`、`Plugin`**。GitHub 下载的 ZIP 常多包一层目录，必要时再进入一层。
+
+不要在 ZIP 的预览窗口里执行脚本。后面的命令都在上述源码根目录执行。
+
+如果已安装 Git，也可以在 PowerShell 中执行以下两行，然后继续下一步：
+
+```powershell
+git clone https://github.com/caozichen/peak--modifier-e66.git
+cd peak--modifier-e66
+```
+
+### 第 3 步：在源码目录打开 PowerShell，确认环境
+
+1. 在文件资源管理器中打开刚才的源码根目录。
+2. 点击顶部显示文件夹路径的**地址栏**，输入 `powershell`，按回车。这样打开的 PowerShell 会位于当前源码目录。
+3. 在新窗口中逐行输入或粘贴下面两条命令，每条输入后按回车：
+
+```powershell
+Test-Path .\scripts\Publish-Portable.ps1
+dotnet --version
+```
+
+第一条应显示 **`True`**；如果显示 `False`，说明当前目录不对，请回到能看到 `scripts` 文件夹的源码根目录重新打开 PowerShell。第二条应找到 `global.json` 指定的 SDK；基线版本为 **10.0.403**，同一 `10.0.4xx` feature band 的后续补丁也按仓库配置允许。
+
+如果提示“找不到 dotnet”或“找不到兼容的 SDK”，请先检查 SDK 版本、x64 安装是否完成，再重新打开窗口。
+
+### 第 4 步：允许当前窗口执行仓库脚本
+
+在同一个 PowerShell 窗口执行：
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+```
+
+如果询问是否更改执行策略，输入 `Y` 后回车。此设置只对**当前 PowerShell 进程**有效；关闭窗口后，下一次操作需要重新执行这条命令。
+
+### 第 5 步：准备 BepInEx 游戏插件加载器
+
+**BepInEx 是让 PEAK 加载本项目插件的加载器。** 窗口通过该插件连接游戏。这里使用 **BepInEx 5.4.23.6、Windows x64 Mono 版**。
+
+在源码根目录执行：
+
+```powershell
+.\scripts\Prepare-Dependencies.ps1
+```
+
+脚本会下载官方固定版本的 ZIP，检查 SHA256，再解压到源码目录的 `.dependencies` 文件夹。看到 **`Prepared BepInEx 5.4.23.6 x64 Mono:`** 就表示准备完成。
+
+这一步只是在源码目录准备构建和发布材料，**还没有向游戏目录安装插件**。首次安装到游戏目录由第 8 步的窗口处理，不需要你手工复制 DLL。
+
+如果自动下载失败：
+
+1. 打开 [BepInEx 5.4.23.6 官方发布页](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.23.6)。
+2. 在 Assets 中下载 **`BepInEx_win_x64_5.4.23.6.zip`**，保留 ZIP 文件即可。不要改用 x86、IL2CPP 或其他版本。
+3. 执行下面命令，把引号中的路径改成你下载的 ZIP 的完整路径：
+
+```powershell
+.\scripts\Prepare-Dependencies.ps1 -BepInExArchive 'D:\Downloads\BepInEx_win_x64_5.4.23.6.zip'
+```
+
+如果之前已经成功执行过准备脚本，可以跳过这一步。默认脚本使用的是**源码目录里的依赖副本**；仅仅在游戏目录已经装过 BepInEx，不代表这里已经准备完成。使用自己的完整加载器目录作为构建材料的方法见后面的开发者说明。
+
+### 第 6 步：找到并填入你自己的 PEAK 安装路径
+
+1. 打开 Steam，进入“库”。
+2. 右键 PEAK，打开“属性” → “已安装文件” → “浏览”。
+3. 在打开的文件资源管理器中，确认当前文件夹里能看到 **`PEAK.exe` 和 `PEAK_Data`**。
+4. 点击地址栏，复制整个文件夹路径。
+5. 回到刚才的 PowerShell，把下面示例中的路径替换成你自己的路径，再执行：
+
+```powershell
+$env:PEAK_GAME_DIR = 'D:\SteamLibrary\steamapps\common\PEAK'
+```
+
+上面的 `D:` 只是示例，你的游戏可以在其他盘。填写包含 `PEAK.exe` 的文件夹，路径末尾不要额外添加 `PEAK.exe` 或 `PEAK_Data`。
+
+可以再执行这两条检查，正常应都显示 `True`：
+
+```powershell
+Test-Path (Join-Path $env:PEAK_GAME_DIR 'PEAK.exe')
+Test-Path (Join-Path $env:PEAK_GAME_DIR 'PEAK_Data\Managed\Assembly-CSharp.dll')
+```
+
+### 第 7 步：一次生成可以运行的完整程序
+
+在同一个 PowerShell 窗口执行：
+
+```powershell
+.\scripts\Publish-Portable.ps1 -GameDir $env:PEAK_GAME_DIR
+```
+
+这条命令会依次**编译游戏插件、更新本次插件的文件哈希、构建并发布桌面窗口、复制加载器及插件、生成运行清单与使用说明**。首次运行需要从 NuGet 下载自包含运行所需的包，耗时取决于网络。
+
+首次生成请使用上面这条命令，**不要额外加 `-SkipBuild`**；该选项只适用于已经完成本次 Release 构建的开发流程。
+
+成功时，结尾会显示 **`Portable folder prepared:`** 和生成目录。默认目录结构为：
+
+```text
+源码根目录/
+└─ artifacts/
+   └─ 这次我一定要爬到顶/
+      ├─ PeakWorkshop.exe
+      ├─ Launch.cmd
+      ├─ data/
+      ├─ logs/
+      ├─ backups/
+      └─ settings.json
+```
+
+看到 EXE 后请保留整个“这次我一定要爬到顶”文件夹。`data` 中的加载器和插件也是运行流程的一部分，只拿走 EXE 会导致安装管理功能缺少文件。
+
+### 第 8 步：第一次打开窗口、安装插件，再启动游戏
+
+1. 确认 PEAK 已正常退出。安装或替换游戏插件时需要游戏关闭。
+2. 在文件资源管理器中进入 `artifacts\这次我一定要爬到顶`，双击 **`PeakWorkshop.exe`**。也可以在刚才的 PowerShell 中执行：
+
+```powershell
+& '.\artifacts\这次我一定要爬到顶\PeakWorkshop.exe'
+```
+
+3. 首次打开会进入“游戏与插件”。核对自动找到的游戏路径是否正确；找不到、找到多个副本或选错时，使用“手动选择”指定第 6 步确认的目录。
+4. 点击“安装游戏插件”，等待窗口显示安装完成。已有未知加载器、冲突插件或文件权限问题时，先按提示处理，再重新检查。
+5. 点击“完成，返回修改器”。
+6. 从 **Steam** 启动 PEAK，保持修改器窗口打开。
+7. 等待窗口连接游戏。进入能够控制本地角色的状态后，可用功能的开关和倍率输入才会开放；按需逐项开启。
+
+首次启动全部功能默认关闭，这是正常行为。安装成功后，不要在游戏仍运行时反复替换 DLL。
+
+### 第 9 步：以后怎么使用、什么时候需要重新构建
+
+- **日常使用：** 打开已经生成的 `PeakWorkshop.exe`，再从 Steam 启动游戏，等待连接即可。不需要重新下载依赖或重新执行构建命令。
+- **把生成的程序交给另一台电脑运行：** 复制整个干净的便携目录，运行者无需另装 .NET SDK 或 .NET 运行时；目标电脑仍需 Windows x64 和 PEAK，并完成本机插件部署。
+- **更新源码后：** 重新运行发布脚本，并提供一个新的输出目录。依赖版本没有变化且已完整准备时，可复用原来的依赖材料。
+- **保留安装管理能力：** 使用后的 `backups` 和安装记录请随整个便携目录保留；不要把个人设置、日志、备份作为干净分发包转给别人。
+
+如果默认输出目录已经存在，脚本会停止，防止覆盖设置和备份。如果只是要使用程序，直接打开原 EXE；如果确实要重新构建，可改用新目录，例如：
+
+```powershell
+.\scripts\Publish-Portable.ps1 -GameDir $env:PEAK_GAME_DIR -OutputDir '.\artifacts\再次构建\这次我一定要爬到顶'
+```
+
+### 首次使用常见问题
+
+| 看到的提示 / 现象 | 如何处理 |
+| --- | --- |
+| `Test-Path` 显示 `False` | 检查 PowerShell 是否在源码根目录；检查填写的是包含 PEAK.exe 的游戏目录 |
+| 找不到 `dotnet` / 找不到兼容 SDK | 安装 10.0.403 x64 SDK，或仓库允许的同一 feature band 后续补丁；安装后重新打开 PowerShell |
+| 系统禁止运行脚本 | 在当前 PowerShell 窗口重新执行第 4 步的进程级设置 |
+| BepInEx 下载失败、SSL 或连接错误 | 使用第 5 步的官方 ZIP 手动下载方式，再用 `-BepInExArchive` 准备 |
+| 依赖目录已经存在 | 已完整准备成功的可以复用；准备中断、不完整时使用新的干净源码目录重试 |
+| `NU1301` / 无法访问 NuGet 源 | 检查到 nuget.org 的网络连接；离线构建还需事先准备完整 NuGet 本地包源并传入 `-NuGetConfig`，只有 BepInEx ZIP 不够 |
+| 输出目录已存在 | 日常使用直接打开其中的 EXE；重新构建时用 `-OutputDir` 指定新的目录 |
+| 尚未检测到游戏 / 尚未连接插件 | 核对选中的游戏目录、插件安装结果，以及 Steam 启动的是否为同一个 PEAK 副本 |
+| 等待本地角色就绪 / 控件灰色 | 等到角色可控制并查看具体提示；仍不正常时，在“游戏与插件”收集日志，再检查游戏目录的 BepInEx/LogOutput.log |
+
+后面保留完整环境表、开发者构建与验证命令、功能清单和架构说明，供排查问题与后续开发使用。
+
+---
+
 | 组件 | 当前版本 / 目标 |
 | --- | --- |
 | 桌面窗口 | 0.3.2；`net10.0-windows`、WPF、Windows x64 |
@@ -39,14 +220,14 @@
 
 `global.json` 固定 SDK，安装其他大版本 SDK 不会自动替代它。首次 restore/publish 可能从 NuGet 下载 Windows Desktop 与自包含运行包。断网构建可传 `-NuGetConfig` 指向自己的离线源；仓库不包含预下载 SDK 或 NuGet 缓存。
 
-## 2. 从源码构建并运行
+## 2. 开发者完整构建与验证命令
 
 以下命令在 **PowerShell** 执行。将示例游戏路径改成自己的安装目录；默认不写死盘符。构建只读取游戏参考文件，不自动安装插件或启动游戏。
 
 ```powershell
 git clone https://github.com/caozichen/peak--modifier-e66.git
 cd peak--modifier-e66
-# 私有仓库需要你自己的 GitHub 账号已获得访问权限。
+# 公开仓库可以匿名克隆；也可在仓库网页使用 Code → Download ZIP。
 
 dotnet --version
 $env:PEAK_GAME_DIR = 'D:\SteamLibrary\steamapps\common\PEAK'
